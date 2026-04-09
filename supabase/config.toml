@@ -1,0 +1,11 @@
+# Локальная разработка Supabase CLI (опционально).
+# Для self-hosted: скопируйте секцию [functions.*] в конфиг на сервере, если он поддерживается.
+
+[functions.qbit-analytics-session]
+verify_jwt = false
+
+[functions.upload-site-asset]
+verify_jwt = false
+
+[functions.save-site-copy]
+verify_jwt = false

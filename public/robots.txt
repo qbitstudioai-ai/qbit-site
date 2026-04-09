@@ -1,0 +1,7 @@
+# https://allqbit.ru
+# Админка открывается как #/admin (hash). Роботы запрашивают только путь без фрагмента,
+# поэтому отдельный Disallow для «админки» в robots.txt технически невозможен.
+User-agent: *
+Allow: /
+
+Sitemap: https://allqbit.ru/sitemap.xml
