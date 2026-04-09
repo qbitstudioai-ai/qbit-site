@@ -1,0 +1,193 @@
+================================================================================
+  ПАМЯТКА ПО ПРОЕКТУ QBIT-SITE (allqbit.ru)
+  Дата составления: апрель 2026
+================================================================================
+
+1. ЧТО ЭТО ЗА ПРОЕКТ
+--------------------------------------------------------------------------------
+  Одностраничный лендинг (React + Vite) для qbit / studio-ai: автоматизация
+  бизнес-процессов. Сайт с секциями (герой, проблемы, картотека сценариев,
+  соцсети, результаты, направления, подход, FAQ, CTA, контакты, футер),
+  админ-панель по адресу #/admin, опциональный чат с ИИ, cookie-баннер,
+  аналитика посещений через Supabase.
+
+  Исходный код (редактируемые тексты по умолчанию): src/content.ts
+  Тексты после правок в админке мерджатся с дефолтами (контекст + Supabase).
+
+
+2. ГДЕ ЛЕЖИТ КОД
+--------------------------------------------------------------------------------
+  Локально (рабочая копия):
+    C:\Users\user\Desktop\site\qbit-site
+
+  Репозиторий GitHub:
+    https://github.com/qbitstudioai-ai/qbit-site
+    Ветка по умолчанию: main
+
+  В Git НЕ попадают (см. .gitignore):
+    - .env (секреты, пароли, ключи)
+    - node_modules
+    - dist (сборка создаётся командой npm run build)
+    - supabase/.temp (кэш CLI)
+
+  Шаблон переменных без секретов:
+    .env.example
+
+
+3. ДОМЕНЫ И DNS
+--------------------------------------------------------------------------------
+  Публичный сайт:
+    https://allqbit.ru
+    https://www.allqbit.ru  (нужна A-запись www → тот же IP, что и корень)
+
+  Supabase (API, Studio, Storage, Edge Functions):
+    https://supabase.allqbit.ru  (или как настроено в PROXY_DOMAIN в .env на сервере)
+
+  Важно: на корень домена allqbit.ru должен указывать ОДИН IP (сайт), без
+  дублирующих A-записей на разные сервера — иначе часть пользователей
+  попадёт не туда.
+
+
+4. СЕРВЕР САЙТА И SUPABASE (VPS)
+--------------------------------------------------------------------------------
+  IP (по состоянию на настройку): 72.56.6.85
+  SSH (пример): ssh root@72.56.6.85
+
+  Стек Supabase (Docker) обычно в каталоге:
+    /opt/supabase
+
+  Статический сайт (содержимое папки dist после сборки):
+    Хост: /opt/supabase/volumes/allqbit-static/
+    В контейнере Caddy: /srv/allqbit
+    В Caddyfile (рядом с конфигом прокси):
+    /opt/supabase/volumes/proxy/caddy/Caddyfile
+
+  Блок Caddy для лендинга (пример смысла):
+    - server: allqbit.ru, www.allqbit.ru
+    - root * /srv/allqbit
+    - file_server, gzip
+
+  Отдельный блок Caddy для PROXY_DOMAIN (например supabase...):
+    - пути API → reverse_proxy kong:8000
+    - остальное → Studio с basic_auth
+
+  Docker Compose Caddy:
+    /opt/supabase/docker-compose.caddy.yml
+    Том для статики (должен быть в volumes у сервиса caddy):
+    - ./volumes/allqbit-static:/srv/allqbit:ro
+
+  Перезапуск Caddy после правок compose/Caddyfile:
+    cd /opt/supabase && docker compose -f docker-compose.yml -f docker-compose.caddy.yml up -d caddy
+
+  Заливка новой версии сайта с ПК (PowerShell):
+    cd C:\Users\user\Desktop\site\qbit-site\dist
+    scp -r * root@72.56.6.85:/opt/supabase/volumes/allqbit-static/
+
+  Сертификаты HTTPS: Caddy сам получает Let's Encrypt; данные в томе caddy_data.
+
+
+5. EDGE FUNCTIONS (ПАПКИ И ДЕПЛОЙ)
+--------------------------------------------------------------------------------
+  В репозитории:
+    supabase/functions/upload-site-asset/index.ts   — загрузка PDF/HTML презентации и политики
+    supabase/functions/save-site-copy/index.ts        — сохранение JSON текстов сайта в БД
+    supabase/functions/qbit-analytics-session/        — аналитика сессий
+
+  На self-hosted сервере функции лежат в:
+    /opt/supabase/volumes/functions/<имя-функции>/index.ts
+
+  После копирования или изменения:
+    cd /opt/supabase && docker compose restart functions
+    (или docker compose up -d functions)
+
+  В docker-compose у контейнера functions должны быть переменные:
+    SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, QBIT_ADMIN_UPLOAD_PASSWORD
+    (последний = тот же пароль, что VITE_ADMIN_PASSWORD при сборке фронта)
+
+  Локально для облачного Supabase можно было бы: npm run supabase:deploy:...
+
+
+6. БАЗА ДАННЫХ И МИГРАЦИИ
+--------------------------------------------------------------------------------
+  Схема: qbit_site
+  Миграции в репо: supabase/migrations/
+
+  Основные темы:
+    - схема, таблицы аналитики (visitors, sessions, page_views, events)
+    - RLS и права для anon
+    - RPC для сессий
+    - публичные ассеты / Storage (presentation, privacy policy)
+    - site_copy — таблица для текстов сайта (payload JSON), чтение anon, запись через save-site-copy
+
+  Применение: SQL Editor в Studio или ваш принятый способ (db push и т.д.).
+
+
+7. ПЕРЕМЕННЫЕ ОКРУЖЕНИЯ ФРОНТА (.env)
+--------------------------------------------------------------------------------
+  VITE_SITE_URL              — канонический URL сайта (Open Graph)
+  VITE_SUPABASE_URL          — URL Supabase
+  VITE_SUPABASE_ANON_KEY     — anon key
+  VITE_ADMIN_LOGIN           — логин админки (клиентская проверка)
+  VITE_ADMIN_PASSWORD        — пароль админки; же значение что QBIT_ADMIN_UPLOAD_PASSWORD на сервере
+  VITE_AI_CHAT_URL           — опционально, бэкенд чата
+  (прочее по мере необходимости — см. .env.example)
+
+
+8. АДМИН-ПАНЕЛЬ
+--------------------------------------------------------------------------------
+  URL: https://allqbit.ru#/admin  (хэш-маршрут)
+
+  Возможности (в общих чертах):
+    - презентация и политика: загрузка в Supabase Storage (если настроен клиент) или локально
+    - переключатели: кнопка презентации, чат, ссылка в cookie-баннере
+    - контакты: сохраняются в localStorage этого браузера
+    - тексты сайта: при Supabase — общий JSON в qbit_site.site_copy + Edge Function save-site-copy;
+      без Supabase — только localStorage браузера
+
+  Заголовок при вызове функций: x-qbit-admin-password
+
+
+9. СБОРКА И РАЗРАБОТКА
+--------------------------------------------------------------------------------
+  Установка зависимостей: npm ci   или   npm install
+  Разработка: npm run dev
+  Продакшен-сборка: npm run build
+  Результат сборки: папка dist/  → заливать на сервер (см. п.4)
+
+
+10. DOCKER / РЕСУРСЫ (КРАТКО)
+--------------------------------------------------------------------------------
+  Полезные команды на сервере:
+    docker stats --no-stream
+    free -h
+    df -h
+    docker system df
+
+  Тяжёлые по памяти части стека: analytics (Logflare), Kong, Postgres, Studio и др.
+  У вас ~8 GiB RAM — запас нормальный; swap не использовался в снимке.
+
+  Следить за ростом диска: БД, Storage, логи Docker (ротация max-size при необходимости).
+
+
+11. ЧТО МЫ ДЕЛАЛИ В ХОДЕ НАСТРОЙКИ (КРАТКАЯ ХРОНОЛОГИЯ)
+--------------------------------------------------------------------------------
+  - Деплой Edge Function upload-site-asset на self-hosted (копирование в volumes/functions + restart)
+  - Настройка QBIT_ADMIN_UPLOAD_PASSWORD и проброс в docker-compose для functions
+  - Функция save-site-copy + миграция site_copy для редактируемых текстов с сервера
+  - Расширение админки: редактирование текстов всего сайта (в т.ч. «печатающиеся» в картотеке)
+  - DNS: оставлен один A на 72.56.6.85 для allqbit.ru
+  - Caddy: отдельный сайт allqbit.ru / www → статика из allqbit-static; том в compose
+  - Заливка dist в /opt/supabase/volumes/allqbit-static/
+  - Git: инициализация репозитория, .gitignore, push на GitHub qbitstudioai-ai/qbit-site
+
+
+12. БЫСТРЫЕ ССЫЛКИ
+--------------------------------------------------------------------------------
+  GitHub:     https://github.com/qbitstudioai-ai/qbit-site
+  Сайт:       https://allqbit.ru
+  Supabase:   https://supabase.allqbit.ru (если так настроено)
+
+
+================================================================================
+  Конец файла. При смене IP, путей или аккаунта GitHub — обновите разделы вручную.
+================================================================================
