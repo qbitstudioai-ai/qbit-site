@@ -34,10 +34,20 @@ function json(body: unknown, status = 200): Response {
 
 type Kind = "presentation" | "privacy_policy";
 
-function storagePath(kind: Kind, mime: string): string {
-  if (kind === "presentation") return "presentation.pdf";
-  if (mime.includes("html")) return "privacy-policy.html";
-  return "privacy-policy.pdf";
+/** Имя ключа в Storage + корректный Content-Type (важно: у .html часто пустой file.type → иначе отдаётся как PDF и браузер показывает «код»). */
+function presentationTarget(): { path: string; contentType: string } {
+  return { path: "presentation.pdf", contentType: "application/pdf" };
+}
+
+function privacyPolicyTarget(file: File, mime: string): { path: string; contentType: string } {
+  const lower = file.name.toLowerCase();
+  const looksHtml =
+    lower.endsWith(".html") || lower.endsWith(".htm") || mime.includes("html");
+  if (looksHtml) {
+    // Только "text/html": в bucket qbit_site_files allowed_mime_types не включает вариант с charset
+    return { path: "privacy-policy.html", contentType: "text/html" };
+  }
+  return { path: "privacy-policy.pdf", contentType: "application/pdf" };
 }
 
 function allPrivacyPaths(): string[] {
@@ -144,7 +154,9 @@ Deno.serve(async (req) => {
     return json({ ok: false, error: "too_large" }, 413);
   }
 
-  const path = storagePath(kind, mime);
+  const target =
+    kind === "presentation" ? presentationTarget() : privacyPolicyTarget(file, mime);
+  const path = target.path;
   const buf = new Uint8Array(await file.arrayBuffer());
 
   if (kind === "privacy_policy") {
@@ -152,7 +164,7 @@ Deno.serve(async (req) => {
   }
 
   const { error: upErr } = await admin.storage.from(BUCKET).upload(path, buf, {
-    contentType: mime.includes("html") ? "text/html" : "application/pdf",
+    contentType: target.contentType,
     upsert: true,
   });
 

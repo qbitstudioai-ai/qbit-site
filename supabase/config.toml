@@ -9,3 +9,6 @@ verify_jwt = false
 
 [functions.save-site-copy]
 verify_jwt = false
+
+[functions.serve-privacy-html]
+verify_jwt = false

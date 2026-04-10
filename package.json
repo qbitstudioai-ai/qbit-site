@@ -14,7 +14,8 @@
     "supabase:version": "supabase --version",
     "supabase:deploy:analytics-session": "supabase functions deploy qbit-analytics-session --no-verify-jwt",
     "supabase:deploy:upload-site-asset": "supabase functions deploy upload-site-asset --no-verify-jwt",
-    "supabase:deploy:save-site-copy": "supabase functions deploy save-site-copy --no-verify-jwt"
+    "supabase:deploy:save-site-copy": "supabase functions deploy save-site-copy --no-verify-jwt",
+    "supabase:deploy:serve-privacy-html": "supabase functions deploy serve-privacy-html --no-verify-jwt"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.102.1",

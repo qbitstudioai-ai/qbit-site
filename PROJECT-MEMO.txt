@@ -90,6 +90,7 @@
 --------------------------------------------------------------------------------
   В репозитории:
     supabase/functions/upload-site-asset/index.ts   — загрузка PDF/HTML презентации и политики
+    supabase/functions/serve-privacy-html/index.ts  — отдача HTML политики с заголовком text/html (обход Storage)
     supabase/functions/save-site-copy/index.ts        — сохранение JSON текстов сайта в БД
     supabase/functions/qbit-analytics-session/        — аналитика сессий
 

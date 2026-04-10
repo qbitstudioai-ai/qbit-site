@@ -18,6 +18,7 @@ import {
   callDeleteSiteAsset,
   callUploadSiteAsset,
   fetchSiteAssetRows,
+  privacyHtmlFunctionUrl,
   publicStorageObjectUrl,
   type SiteAssetRow,
 } from "../lib/siteAssetRemote";
@@ -313,6 +314,10 @@ export function SiteSettingsProvider({ children }: { children: ReactNode }) {
     if (usesServerAssets && supabaseUrl) {
       const row = assetRows.find((r) => r.asset_key === "privacy_policy");
       if (row?.storage_path) {
+        const p = row.storage_path.toLowerCase();
+        if (p.endsWith(".html") || p.endsWith(".htm")) {
+          return privacyHtmlFunctionUrl(supabaseUrl, row.updated_at);
+        }
         return bustUrl(publicStorageObjectUrl(supabaseUrl, row.storage_path), row.updated_at);
       }
       return links.privacyPolicy;

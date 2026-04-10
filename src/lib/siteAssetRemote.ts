@@ -21,6 +21,14 @@ export function bustUrl(fileUrl: string, updatedAt: string): string {
   return u.toString();
 }
 
+/** Просмотр HTML политики через Edge Function (корректный Content-Type; обход бага Storage). */
+export function privacyHtmlFunctionUrl(projectUrl: string, updatedAt: string): string {
+  const base = projectUrl.replace(/\/$/, "");
+  const u = new URL(`${base}/functions/v1/serve-privacy-html`);
+  u.searchParams.set("v", updatedAt);
+  return u.toString();
+}
+
 export async function fetchSiteAssetRows(): Promise<SiteAssetRow[]> {
   const sb = getSupabaseClient();
   if (!sb) return [];
