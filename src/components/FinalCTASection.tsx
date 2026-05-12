@@ -26,7 +26,7 @@ export function FinalCTASection() {
                 key={card.label}
                 className="social-card social-card--with-icon"
                 href={card.href}
-                {...(isExternal ? { target: "_blank", rel: "noreferrer" } : {})}
+                {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
               >
                 <div className="social-card__copy">
                   <span className="social-card__name">{card.label}</span>

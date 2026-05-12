@@ -18,7 +18,7 @@ export function SocialSection() {
         </h2>
         <p className="section__intro">{social.text}</p>
         <div className="social-cards">
-          <a className="social-card social-card--with-icon" href={L.telegram} target="_blank" rel="noreferrer">
+          <a className="social-card social-card--with-icon" href={L.telegram} target="_blank" rel="noopener noreferrer">
             <div className="social-card__copy">
               <span className="social-card__name">{social.telegramLabel}</span>
               <p className="social-card__hint">{social.cardsHint}</p>
@@ -35,7 +35,7 @@ export function SocialSection() {
               />
             </div>
           </a>
-          <a className="social-card social-card--with-icon" href={L.vk} target="_blank" rel="noreferrer">
+          <a className="social-card social-card--with-icon" href={L.vk} target="_blank" rel="noopener noreferrer">
             <div className="social-card__copy">
               <span className="social-card__name">{social.vkLabel}</span>
               <p className="social-card__hint">{social.cardsHint}</p>

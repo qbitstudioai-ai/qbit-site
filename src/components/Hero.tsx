@@ -1,10 +1,9 @@
 import { useSiteContent } from "../siteContent/useSiteContent";
-import { useSiteSettings } from "../siteSettings/SiteSettingsContext";
 
 const dashboardSrc = "/hero-dashboard.png";
+const automationExamplesHref = "/automation-examples.html";
 
 export function Hero() {
-  const s = useSiteSettings();
   const { hero, telegramDirectHref } = useSiteContent();
 
   return (
@@ -17,11 +16,11 @@ export function Hero() {
           </h1>
           <p className="hero__subtitle">{hero.subtitle}</p>
           <div className="btn-row">
-            <a className="btn btn--primary" href={telegramDirectHref} target="_blank" rel="noreferrer">
+            <a className="btn btn--primary" href={telegramDirectHref} target="_blank" rel="noopener noreferrer">
               {hero.ctaTelegramLabel}
             </a>
-            <a className="btn" href={s.presentationHref} download={s.presentationDownloadName}>
-              {hero.ctaPresentationLabel}
+            <a className="btn" href={automationExamplesHref}>
+              Примеры автоматизации
             </a>
           </div>
           <p className="hero__trust">{hero.trustLine}</p>

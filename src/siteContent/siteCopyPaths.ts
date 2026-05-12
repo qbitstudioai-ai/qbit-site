@@ -42,6 +42,7 @@ export function buildSiteCopyFieldGroups(): SiteCopyFieldGroup[] {
         tf("aiChat.sendLabel", "Кнопка отправки"),
         tf("aiChat.openLabel", "Подпись «открыть чат»"),
         tf("aiChat.closeLabel", "Подпись «закрыть»"),
+        tf("aiChat.resizeLabel", "Подпись полоски изменения высоты панели"),
       ],
     },
     {

@@ -11,7 +11,7 @@ if (-not (Test-Path "$repo\dist\index.html")) {
   exit 1
 }
 
-Write-Host "1/3 Статика dist -> /opt/supabase/volumes/allqbit-static/" -ForegroundColor Cyan
+Write-Host "1/4 Статика dist -> /opt/supabase/volumes/allqbit-static/" -ForegroundColor Cyan
 Set-Location "$repo\dist"
 scp -r * "${User}@${Server}:/opt/supabase/volumes/allqbit-static/"
 

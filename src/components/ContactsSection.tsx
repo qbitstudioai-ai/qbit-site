@@ -17,7 +17,7 @@ export function ContactsSection() {
             <li className="contact-block__item">
               <h3>{contacts.headingTelegram}</h3>
               <p>
-                <a href={L.telegram} target="_blank" rel="noreferrer">
+                <a href={L.telegram} target="_blank" rel="noopener noreferrer">
                   {L.telegramDisplay}
                 </a>
               </p>
@@ -31,7 +31,7 @@ export function ContactsSection() {
             <li className="contact-block__item">
               <h3>{contacts.headingVk}</h3>
               <p>
-                <a href={L.vk} target="_blank" rel="noreferrer">
+                <a href={L.vk} target="_blank" rel="noopener noreferrer">
                   {L.vkDisplay}
                 </a>
               </p>

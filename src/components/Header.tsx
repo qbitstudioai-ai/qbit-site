@@ -9,6 +9,7 @@ export function Header() {
   const s = useSiteSettings();
   const { headerNav, presentation } = useSiteContent();
   const L = s.resolvedContacts;
+  const automationExamplesHref = "/automation-examples.html";
 
   useEffect(() => {
     if (!open) return;
@@ -29,6 +30,9 @@ export function Header() {
               {item.label}
             </a>
           ))}
+          <a className="site-nav__examples" href={automationExamplesHref}>
+            Примеры автоматизации
+          </a>
           {s.presentationEnabled ? (
             <a
               className="site-nav__presentation"
@@ -81,6 +85,13 @@ export function Header() {
             {item.label}
           </a>
         ))}
+        <a
+          className="site-nav__examples site-nav__examples--drawer"
+          href={automationExamplesHref}
+          onClick={() => setOpen(false)}
+        >
+          Примеры автоматизации
+        </a>
         {s.presentationEnabled ? (
           <a
             className="site-nav__presentation site-nav__presentation--drawer"

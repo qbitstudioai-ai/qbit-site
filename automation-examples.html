@@ -1,0 +1,1996 @@
+<!doctype html>
+
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Примеры автоматизации | qbit / studio-ai</title>
+<meta content="Примеры автоматизации бизнес-процессов от qbit / studio-ai. Реальные цифры, российские цены, готовые сценарии." name="description"/>
+<style>
+      :root {
+        --bg: #ffffff;
+        --text: #111111;
+        --text-muted: #c4d0da;
+        --border: #e0e0e0;
+        --radius: 6px;
+        --max: 72rem;
+        --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        --cyber-graphite: #2b2b2e;
+        --cyber-graphite-deep: #232326;
+        --cyber-cyan: #5ee8f0;
+        --cyber-cyan-soft: rgba(94, 232, 240, 0.14);
+        --cyber-cyan-line: rgba(94, 232, 240, 0.24);
+        --shadow:
+          0 0 22px rgba(94, 232, 240, 0.38),
+          0 0 52px rgba(46, 212, 196, 0.2);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--font-sans);
+        color: #eef2f7;
+        background: linear-gradient(180deg, #2b2b2e 0%, #232326 100%);
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.1;
+        background-image: url("/cyber-binary-tile.svg");
+        background-repeat: repeat;
+        background-size: 480px 256px;
+        mix-blend-mode: screen;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .layout {
+        width: 100%;
+        max-width: var(--max);
+        margin: 0 auto;
+        padding: 0 clamp(1rem, 4vw, 1.75rem);
+        position: relative;
+        z-index: 1;
+      }
+
+      .section {
+        padding: clamp(3.6rem, 7.2vw, 6rem) 0;
+      }
+
+      .hero {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+
+      .hero__eyebrow {
+        margin: 0 0 0.8rem;
+        color: rgba(120, 210, 220, 0.9);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .hero__title {
+        margin: 0 0 1rem;
+        font-size: clamp(2rem, 5vw, 3.8rem);
+        line-height: 1.05;
+        letter-spacing: -0.04em;
+        color: #f8fafc;
+        text-shadow:
+          0 0 48px rgba(94, 232, 240, 0.14),
+          0 0 1px rgba(255, 255, 255, 0.35);
+      }
+
+      .hero__subtitle {
+        max-width: 54rem;
+        margin: 0;
+        color: rgba(196, 208, 218, 0.92);
+        font-size: 1.05rem;
+        line-height: 1.6;
+      }
+
+      .section__title {
+        margin: 0 0 1rem;
+        text-align: center;
+        font-size: clamp(1.75rem, 4.5vw, 2.5rem);
+        font-weight: 800;
+        line-height: 1.15;
+        letter-spacing: -0.03em;
+        color: #f8fafc;
+        text-shadow:
+          0 0 48px rgba(94, 232, 240, 0.14),
+          0 0 1px rgba(255, 255, 255, 0.35);
+      }
+
+      .section__subtitle {
+        max-width: 46rem;
+        margin: 0 auto 2rem;
+        text-align: center;
+        color: rgba(196, 208, 218, 0.92);
+        font-size: 1rem;
+        line-height: 1.6;
+      }
+
+      .archive-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .archive-item-shell {
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+
+      .archive-item {
+        border: 1px solid rgba(94, 232, 240, 0.2);
+        border-radius: var(--radius);
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .archive-item__head {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.9rem;
+        min-height: clamp(5.9rem, 11.3vw, 7rem);
+        padding: 0.65rem 0.95rem;
+        background: #ffffff;
+        color: #111111;
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .archive-item__head::-webkit-details-marker {
+        display: none;
+      }
+
+      .archive-item__head:hover {
+        background: #f7fbfc;
+      }
+
+      .archive-item[open] .archive-item__head {
+        border-bottom: 1px solid rgba(94, 232, 240, 0.14);
+        background: #f7fbfc;
+      }
+
+      .archive-item__lead {
+        display: flex;
+        align-items: center;
+        flex: 1 1 auto;
+        min-width: 0;
+        gap: 0.65rem;
+      }
+
+      .archive-item__icon-rail {
+        display: grid;
+        flex: 0 0 clamp(4.15rem, 7.7vw, 4.9rem);
+        max-width: clamp(4.15rem, 7.7vw, 4.9rem);
+        min-width: clamp(4.15rem, 7.7vw, 4.9rem);
+        align-self: center;
+        aspect-ratio: 1 / 1;
+        place-items: center;
+      }
+
+      .archive-item__icon {
+        display: block;
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        max-height: none;
+        object-fit: contain;
+        mix-blend-mode: multiply;
+      }
+
+      .archive-item__title-wrap {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: min(40rem, calc(100% - 8.2rem));
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        pointer-events: none;
+      }
+
+      .archive-item__index {
+        margin: 0 0 0.3rem;
+        color: rgba(17, 17, 17, 0.5);
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .archive-item__title {
+        color: rgba(46, 212, 196, 1);
+        font-size: clamp(1.18rem, 2.15vw, 1.42rem);
+        font-weight: 700;
+        line-height: 1.25;
+      }
+
+      .archive-item__toggle {
+        display: inline-flex;
+        flex: 0 0 auto;
+        align-items: center;
+        justify-content: center;
+        align-self: center;
+        width: 2.2rem;
+        height: 2.2rem;
+        border-radius: 999px;
+        border: 1px solid rgba(94, 232, 240, 0.24);
+        background: rgba(94, 232, 240, 0.08);
+        color: rgba(17, 17, 17, 0.72);
+      }
+
+      .archive-item__toggle::before {
+        content: "+";
+        font-size: 1.2rem;
+        line-height: 1;
+      }
+
+      .archive-item[open] .archive-item__toggle::before {
+        content: "−";
+      }
+
+      .archive-item__panel-outer {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 0.78s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .archive-item[open] .archive-item__panel-outer {
+        grid-template-rows: 1fr;
+      }
+
+      .archive-item__panel-inner {
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      .archive-item__panel {
+        padding: 1.1rem;
+        opacity: 0;
+        transform: translateY(-0.5rem);
+        transition:
+          opacity 0.46s ease,
+          transform 0.68s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .archive-item[open] .archive-item__panel {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .example-intro {
+        margin: 0 0 1rem;
+        color: rgba(196, 208, 218, 0.92);
+        font-size: 0.98rem;
+        line-height: 1.6;
+      }
+
+      .example-grid {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .archive-file {
+        padding: 1rem;
+        border: 1px solid rgba(94, 232, 240, 0.14);
+        border-radius: var(--radius);
+        background: rgba(18, 22, 28, 0.55);
+      }
+
+      .archive-file__label {
+        margin: 0 0 0.75rem;
+        color: rgba(120, 210, 220, 0.9);
+        font-size: 0.78rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      .archive-file__body {
+        margin: 0;
+        color: rgba(228, 234, 240, 0.92);
+        font-size: 0.96rem;
+        line-height: 1.65;
+      }
+
+      .archive-file__body ol {
+        margin: 0;
+        padding-left: 1.2rem;
+      }
+
+      .archive-file__body li + li {
+        margin-top: 0.7rem;
+      }
+
+      .archive-file__body strong {
+        color: #ffffff;
+      }
+
+      .detail-sections {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .detail-block {
+        border: 1px solid rgba(94, 232, 240, 0.14);
+        border-radius: var(--radius);
+        background: rgba(18, 22, 28, 0.55);
+        overflow: hidden;
+      }
+
+      .detail-block__summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1rem;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .detail-block__summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .detail-block__summary:hover {
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .detail-block[open] .detail-block__summary {
+        border-bottom: 1px solid rgba(94, 232, 240, 0.14);
+      }
+
+      .detail-block__title {
+        margin: 0;
+        color: rgba(120, 210, 220, 0.9);
+        font-size: 0.78rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      .detail-block__toggle {
+        display: inline-flex;
+        flex: 0 0 auto;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 999px;
+        border: 1px solid rgba(94, 232, 240, 0.2);
+        color: rgba(228, 234, 240, 0.8);
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .detail-block__toggle::before {
+        content: "+";
+        font-size: 1.1rem;
+        line-height: 1;
+      }
+
+      .detail-block[open] .detail-block__toggle::before {
+        content: "−";
+      }
+
+      .detail-block__content-outer {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 0.68s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .detail-block[open] .detail-block__content-outer {
+        grid-template-rows: 1fr;
+      }
+
+      .detail-block__content-inner {
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      .detail-block__content {
+        padding: 1rem;
+        opacity: 0;
+        transform: translateY(-0.45rem);
+        transition:
+          opacity 0.4s ease,
+          transform 0.58s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .detail-block[open] .detail-block__content {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .process-grid,
+      .outcome-grid,
+      .improve-grid,
+      .pricing-grid {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .process-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .outcome-grid,
+      .improve-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .pricing-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .mini-card {
+        height: 100%;
+        padding: 1rem;
+        border: 1px solid rgba(94, 232, 240, 0.14);
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .mini-card__kicker {
+        margin: 0 0 0.55rem;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .mini-card__title {
+        margin: 0 0 0.6rem;
+        color: #ffffff;
+        font-size: 1rem;
+        line-height: 1.35;
+      }
+
+      .type-target {
+        display: block;
+      }
+
+      .mini-card__title.type-target {
+        min-height: 2.7em;
+      }
+
+      .mini-card__text {
+        margin: 0;
+        color: rgba(228, 234, 240, 0.88);
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+
+      .price-card {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+      }
+
+      .price-card__tag {
+        display: inline-flex;
+        align-self: flex-start;
+        padding: 0.38rem 0.6rem;
+        border-radius: 999px;
+        border: 1px solid rgba(94, 232, 240, 0.2);
+        background: rgba(94, 232, 240, 0.08);
+        color: rgba(180, 240, 244, 0.96);
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .price-card__value {
+        margin: 0;
+        color: #ffffff;
+        font-size: 1.9rem;
+        font-weight: 800;
+        line-height: 1;
+      }
+
+      .price-card__value.type-target {
+        min-height: 1em;
+      }
+
+      .price-card__note {
+        margin: 0;
+        color: rgba(228, 234, 240, 0.88);
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+
+      .price-card ul {
+        margin: 0;
+        padding-left: 1.2rem;
+        color: rgba(228, 234, 240, 0.88);
+      }
+
+      .price-card li + li {
+        margin-top: 0.55rem;
+      }
+
+      .next-block {
+        padding: 1.1rem;
+        border: 1px dashed rgba(94, 232, 240, 0.22);
+        border-radius: var(--radius);
+        color: rgba(196, 208, 218, 0.82);
+        text-align: center;
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .top-actions {
+        margin-top: 1.5rem;
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 2.8rem;
+        padding: 0 1rem;
+        border-radius: var(--radius);
+        border: 1px solid rgba(94, 232, 240, 0.28);
+        background: rgba(0, 0, 0, 0.25);
+        color: #e8f4f6;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .btn:hover {
+        background: rgba(94, 232, 240, 0.08);
+        border-color: rgba(94, 232, 240, 0.5);
+      }
+
+      .btn--primary {
+        color: #0c1416;
+        background: linear-gradient(155deg, #2ed4c4 0%, #1fb5a8 48%, #189a8f 100%);
+        border-color: rgba(94, 232, 240, 0.45);
+      }
+
+      .btn--primary:hover {
+        color: #081010;
+        filter: brightness(1.05);
+      }
+
+      .type-caret {
+        display: inline-block;
+        width: 0.07em;
+        min-width: 2px;
+        height: 0.92em;
+        margin-left: 0.04em;
+        background: currentColor;
+        vertical-align: -0.06em;
+        animation: caret-blink 1s step-end infinite;
+      }
+
+      @keyframes caret-blink {
+        50% {
+          opacity: 0;
+        }
+      }
+
+      @media (max-width: 920px) {
+        .archive-item__head {
+          align-items: flex-start;
+        }
+
+        .archive-item__lead {
+          gap: 0.65rem;
+        }
+
+        .archive-item__icon-rail {
+          flex-basis: 4.35rem;
+          max-width: 4.35rem;
+          min-width: 4.35rem;
+        }
+
+        .archive-item__title-wrap {
+          width: calc(100% - 7rem);
+        }
+
+        .example-grid,
+        .process-grid,
+        .pricing-grid,
+        .outcome-grid,
+        .improve-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .archive-item__panel-outer,
+        .archive-item__panel,
+        .detail-block__content-outer,
+        .detail-block__content {
+          transition: none;
+        }
+
+        .type-caret {
+          animation: none;
+        }
+      }
+    </style>
+</head>
+<body>
+<main>
+<section class="section hero">
+<div class="layout">
+<p class="hero__eyebrow">Презентация решений для бизнеса</p>
+<h1 class="hero__title">Автоматизация, которая приносит деньги и освобождает время</h1>
+<p class="hero__subtitle">Сокращаем рутину на 70%, повышаем прозрачность отдела продаж, 
+            экономим руководителю до 30 часов в неделю. Ниже — только некоторые реальные сценарии, 
+            которые уже работают в российских компаниях.</p>
+<div class="top-actions">
+<a class="btn btn--primary" href="https://t.me/Promt_Pavel" target="_blank" rel="noopener noreferrer">Обсудить задачу</a>
+<a class="btn" href="/">Вернуться на сайт</a>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="layout">
+<h2 class="section__title">Где бизнес теряет ресурс и как это исправить</h2>
+<p class="section__subtitle">Примеры автоматизации, которые можно внедрить уже сейчас (указаны примерные цены в рублях РФ, зависит от настроек и доработки)</p>
+<div class="archive-list">
+<div class="archive-item-shell">
+<details class="archive-item">
+<summary class="archive-item__head">
+<span class="archive-item__lead">
+<span aria-hidden="true" class="archive-item__icon-rail">
+<picture>
+<source srcset="/automation-call-managers.webp" type="image/webp" />
+<img alt="" class="archive-item__icon" width="96" height="96" src="/automation-call-managers.png" decoding="async" loading="eager" fetchpriority="high" />
+</picture>
+</span>
+<span class="archive-item__title-wrap">
+<span class="archive-item__index">01</span>
+<span class="archive-item__title">АВТОМАТИЧЕСКИЙ АНАЛИЗ ЗВОНКОВ МЕНЕДЖЕРОВ</span>
+</span>
+</span>
+<span aria-hidden="true" class="archive-item__toggle"></span>
+</summary>
+<div class="archive-item__panel-outer">
+<div class="archive-item__panel-inner">
+<div class="archive-item__panel">
+<p class="example-intro">ПРЯМАЯ ВЫГОДА: руководитель тратит на контроль отдела продаж не 10 часов в неделю, а 15 минут .</p>
+<div class="example-grid">
+<div class="archive-file">
+<p class="archive-file__label">Проблема</p>
+<div class="archive-file__body">
+<ol>
+<li><strong>Руководитель не может прослушать все звонки.</strong> При 50-100 звонках в день на анализ уходит 8–10 часов в неделю, но вы слушаете лишь 1–2% записей.</li>
+<li><strong>Ошибки менеджеров не видны до последствий.</strong> Потерянные клиенты, неправильная отработка возражений и отсутствие следующего шага остаются скрытыми.</li>
+<li><strong>Обучение «вслепую» даёт низкий результат.</strong> Вы не знаете, какие конкретные ошибки повторяет каждый сотрудник.</li>
+</ol>
+</div>
+</div>
+<div class="archive-file">
+<p class="archive-file__label">Решение</p>
+<div class="archive-file__body">
+<ol>
+<li><strong>AI-анализ 100% звонков</strong> – распознаём речь, выделяем скрипт, возражения, эмоции.</li>
+<li><strong>Готовый отчёт руководителю</strong> с рейтингом менеджеров, списком ошибок и рисков.</li>
+<li><strong>Интеграция с телефонией</strong> – не нужно менять привычки, система работает с вашими записями.</li>
+</ol>
+</div>
+</div>
+<div class="archive-file">
+<p class="archive-file__label">Результат</p>
+<div class="archive-file__body">
+<ol>
+<li><strong>Экономия времени:</strong> с 10 часов → до 20 минут в неделю.</li>
+<li><strong>Рост конверсии:</strong> +15–25% после внедрения точечных рекомендаций.</li>
+<li><strong>Прозрачность:</strong> вы точно видите, кто работает эффективно, а кому нужна помощь.</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="detail-sections">
+<details class="detail-block detail-block--collapsible">
+<summary class="detail-block__summary">
+<p class="detail-block__title">Автоматизация (как работает)</p>
+<span aria-hidden="true" class="detail-block__toggle"></span>
+</summary>
+<div class="detail-block__content-outer">
+<div class="detail-block__content-inner">
+<div class="detail-block__content">
+<div class="process-grid">
+<div class="mini-card">
+<p class="mini-card__kicker">Шаг 1</p>
+<h3 class="mini-card__title type-target">Загрузка записей через API или выгрузку</h3>
+<p class="mini-card__text">Подключаемся к вашей телефонии (Манго, Мегафон, Билайн и др.) или забираем файлы из CRM.</p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Шаг 2</p>
+<h3 class="mini-card__title type-target">Транскрибация и AI-анализ</h3>
+<p class="mini-card__text">Превращаем речь в текст, обезличиваем (проверка 152-ФЗ), выявляем ошибки и полезные действия.</p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Шаг 3</p>
+<h3 class="mini-card__title type-target">Отчёт и рекомендации</h3>
+<p class="mini-card__text">Каждую неделю вы получаете понятную аналитику: кто просел, какие ошибки, где нужна доработка.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<details class="detail-block detail-block--collapsible">
+<summary class="detail-block__summary">
+<p class="detail-block__title">Что получите на выходе</p>
+<span aria-hidden="true" class="detail-block__toggle"></span>
+</summary>
+<div class="detail-block__content-outer">
+<div class="detail-block__content-inner">
+<div class="detail-block__content">
+<div class="outcome-grid">
+<div class="mini-card">
+<p class="mini-card__kicker">Отчет 01</p>
+<h3 class="mini-card__title type-target">Сводка по отделу</h3>
+<p class="mini-card__text">Общий уровень качества, динамика по неделям, худшие и лучшие звонки.</p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Отчет 02</p>
+<h3 class="mini-card__title type-target">Карточка каждого менеджера</h3>
+<p class="mini-card__text">Процент выполнения скрипта, отработка возражений, доля речи, количество продуктивных звонков.</p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Отчет 03</p>
+<h3 class="mini-card__title type-target">Риски и топ ошибок</h3>
+<p class="mini-card__text">Автоматическое выделение звонков с конфликтами, потерей клиента, без следующего шага.</p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Формат</p>
+<h3 class="mini-card__title type-target">План обучения</h3>
+<p class="mini-card__text">Конкретные рекомендации: кому и по каким темам провести тренинги.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<details class="detail-block detail-block--collapsible">
+<summary class="detail-block__summary">
+<p class="detail-block__title">Стоимость проекта</p>
+<span aria-hidden="true" class="detail-block__toggle"></span>
+</summary>
+<div class="detail-block__content-outer">
+<div class="detail-block__content-inner">
+<div class="detail-block__content">
+<div class="pricing-grid">
+<div class="mini-card price-card">
+<span class="price-card__tag">MVP на n8n</span>
+<p class="price-card__value type-target">45 000 ₽</p>
+<h3 class="mini-card__title type-target">Проект на N8n</h3>
+<p class="price-card__note">Быстрый запуск за 3–5 дней, без сервера. Подходит для проверки гипотезы на 100-200 звонках.</p>
+<ul>
+<li>базовый workflow в n8n</li>
+<li>транскрибация и отчёт на почту</li>
+<li>ручной запуск или по расписанию</li>
+</ul>
+</div>
+<div class="mini-card price-card">
+<span class="price-card__tag">Базовая система</span>
+<p class="price-card__value type-target">140 000 ₽</p>
+<h3 class="mini-card__title type-target">Рабочий проект на сервере</h3>
+<p class="price-card__note">Установка на ваш сервер, регулярный анализ, хранение истории до 3 месяцев.</p>
+<ul>
+<li>автоматический запуск каждый день</li>
+<li>PostgreSQL для хранения отчётов</li>
+<li>Telegram / email‑уведомления</li>
+</ul>
+</div>
+<div class="mini-card price-card">
+<span class="price-card__tag">Расширенная + поддержка</span>
+<p class="price-card__value type-target">320 000 ₽</p>
+<h3 class="mini-card__title type-target">Готовое решение с поддержкой</h3>
+<p class="price-card__note">Техническая поддержка, интеграция с CRM, доработка метрик под ваш бизнес.</p>
+<ul>
+<li>Ежемесячная абоненская плата за поддержку всей системы 50 000 руб</li>
+<li>Полностью развернутая система на сервере только для Вашей Компании (n8n,PostgreSQL)</li>
+<li>Вы ни за что не беспокоитесь</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<details class="detail-block detail-block--collapsible">
+<summary class="detail-block__summary">
+<p class="detail-block__title">Что можно улучшить (расширения)</p>
+<span aria-hidden="true" class="detail-block__toggle"></span>
+</summary>
+<div class="detail-block__content-outer">
+<div class="detail-block__content-inner">
+<div class="detail-block__content">
+<div class="improve-grid">
+<div class="mini-card">
+<p class="mini-card__kicker">Расширение 01</p>
+<h3 class="mini-card__title type-target">AI-ассистент для руководителя</h3>
+<p class="mini-card__text">Чат-бот отвечает на вопросы по звонкам: «Покажи все разговоры с клиентом X за месяц».</p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Расширение 02</p>
+<h3 class="mini-card__title type-target">AI-ассистент для менеджера: "Расскажи о чем договорились с клиентом Х на последнем звонке?"</h3>
+<p class="mini-card__text">Мгновенный сигнал, если менеджер пообещал невозможное или клиент выразил намерение уйти.</p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Расширение 03</p>
+<h3 class="mini-card__title type-target">Аналитическая панель (дашборд)</h3>
+<p class="mini-card__text">Веб-интерфейс с графиками динамики качества и KPI каждого сотрудника.</p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Расширение 04</p>
+<h3 class="mini-card__title type-target">Добавить аналитику по клиентам и воронке</h3>
+<p class="mini-card__text">
+                                      Система может показывать, какие клиенты чаще уходят, на каких этапах
+                                      ломается коммуникация и какие типы звонков дают лучший результат.
+                                    </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</details>
+</div>
+<div class="archive-item-shell">
+<details class="archive-item">
+<summary class="archive-item__head">
+<span class="archive-item__lead">
+<span aria-hidden="true" class="archive-item__icon-rail">
+<picture>
+<source srcset="/automation-manager-reports-v2.webp" type="image/webp" />
+<img alt="" class="archive-item__icon" width="96" height="96" src="/automation-manager-reports-v2.png" decoding="async" loading="lazy" />
+</picture>
+</span>
+<span class="archive-item__title-wrap">
+<span class="archive-item__index">02</span>
+<span class="archive-item__title">Отчёты менеджеров по встречам / визитам</span>
+</span>
+</span>
+<span aria-hidden="true" class="archive-item__toggle"></span>
+</summary>
+<div class="archive-item__panel-outer">
+<div class="archive-item__panel-inner">
+<div class="archive-item__panel">
+<p class="example-intro">Вы получаете десятки отчётов в CRM, но до сих пор не видите объективную картину: 
+                        где отписки, где реальный результат, а где менеджер «имитирует бурную деятельность».</p>
+<div class="example-grid">
+<div class="archive-file">
+<p class="archive-file__label">Проблема</p>
+<div class="archive-file__body">
+<ol>
+<li><strong>Ручной анализ отчётов занимает часы.</strong> Руководитель тратит 4–6 часов в неделю, чтобы просто «пробежаться» по записям в CRM.</li>
+<li><strong>Обилие шаблонных и скопированных отчётов.</strong> Менеджеры часто заполняют поля формально, без привязки к реальному результату встречи.</li>
+<li><strong>Нет объективной оценки продуктивности.</strong> Вы не знаете, сколько встреч реально продвинули сделку, а сколько прошли «для галочки».</li>
+</ol>
+</div>
+</div>
+<div class="archive-file">
+<p class="archive-file__label">Решение</p>
+<div class="archive-file__body">
+<ol>
+<li><strong>AI-анализ текста отчётов:</strong> выделяем ключевые смыслы, тип встречи, наличие следующего шага.</li>
+<li><strong>Оценка полезности:</strong> система определяет, была ли встреча технической, продуктивной или формальной.</li>
+<li><strong>Выявление «пустышек»:</strong> автоматическая блокировка скопированных или слишком общих записей.</li>
+</ol>
+</div>
+</div>
+<div class="archive-file">
+<p class="archive-file__label">Результат</p>
+<div class="archive-file__body">
+<ol>
+<li><strong>Руководитель тратит 20–30 минут в неделю</strong> на аналитику вместо 4–6 часов.</li>
+<li><strong>Рост реальной активности:</strong> менеджеры знают, что отчёты проверяются AI, и перестают отписываться.</li>
+<li><strong>Понятные KPI по качеству:</strong> доля продуктивных встреч, соблюдение скриптов, точность фиксации результатов.</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="detail-sections">
+<details class="detail-block detail-block--collapsible">
+<summary class="detail-block__summary">
+<p class="detail-block__title">Автоматизация</p>
+<span aria-hidden="true" class="detail-block__toggle"></span>
+</summary>
+<div class="detail-block__content-outer">
+<div class="detail-block__content-inner">
+<div class="detail-block__content">
+<div class="process-grid">
+<div class="mini-card">
+<p class="mini-card__kicker">Шаг 01</p>
+<h3 class="mini-card__title type-target">Выгрузка из CRM</h3>
+<p class="mini-card__text">Через API, CSV или иным способом получаем отчёты по визитам / встречам.</p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Шаг 02</p>
+<h3 class="mini-card__title type-target">AI-оценка содержания</h3>
+<p class="mini-card__text">Определяем цель встречи, следующий шаг, полезность для сделки.</p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Шаг 03</p>
+<h3 class="mini-card__title type-target">Сводка и сигналы</h3>
+<p class="mini-card__text">Формируем отчёт руководителю с выделением проблемных отчётов и лучших практик.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<details class="detail-block detail-block--collapsible">
+<summary class="detail-block__summary">
+<p class="detail-block__title">Что получите</p>
+<span aria-hidden="true" class="detail-block__toggle"></span>
+</summary>
+<div class="detail-block__content-outer">
+<div class="detail-block__content-inner">
+<div class="detail-block__content">
+<div class="outcome-grid">
+<div class="mini-card">
+<p class="mini-card__kicker">Отчет 01</p>
+<h3 class="mini-card__title type-target">Объективный рейтинг менеджеров</h3>
+<p class="mini-card__text">Количество продуктивных встреч vs формальных.</p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Отчет 02</p>
+<h3 class="mini-card__title type-target">Список подозрительных отчётов</h3>
+<p class="mini-card__text">Копипаст, отписки, отсутствие конкретики.</p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Отчет 03</p>
+<h3 class="mini-card__title type-target">Тенденции по команде</h3>
+<p class="mini-card__text">Динамика качества отчётов за недели, сравнение отделов.</p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Формат</p>
+<h3 class="mini-card__title type-target">Рекомендации по улучшению</h3>
+<p class="mini-card__text">Шаблоны и чек-листы для повышения качества отчётов.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<details class="detail-block detail-block--collapsible">
+<summary class="detail-block__summary">
+<p class="detail-block__title">Стоимость</p>
+<span aria-hidden="true" class="detail-block__toggle"></span>
+</summary>
+<div class="detail-block__content-outer">
+<div class="detail-block__content-inner">
+<div class="detail-block__content">
+<div class="pricing-grid">
+<div class="mini-card price-card">
+<span class="price-card__tag">MVP на n8n</span>
+<p class="price-card__value type-target">40 000 ₽</p>
+<h3 class="mini-card__title type-target">Быстрый запуск на N8n</h3>
+<p class="price-card__note">Быстрая проверка гипотезы на 100–200 отчётах, отчёт в в почту.</p>
+<ul>
+<li>выгрузка вручную</li>
+<li>базовый AI-анализ</li>
+<li>простой дашборд</li>
+</ul>
+</div>
+<div class="mini-card price-card">
+<span class="price-card__tag">Серверная версия</span>
+<p class="price-card__value type-target">130 000 ₽</p>
+<h3 class="mini-card__title type-target">Серверное решение для регулярного контроля</h3>
+<p class="price-card__note">Автоматический запуск каждую неделю, хранение истории, интеграция с CRM по API.</p>
+<ul>
+<li>выход готового Excel‑отчёта</li>
+<li>помощь в подключении LLM, БД и др.</li>
+<li>сравнение периодов</li>
+</ul>
+</div>
+<div class="mini-card price-card">
+<span class="price-card__tag">Под ключ + поддержка</span>
+<p class="price-card__value type-target">270 000 ₽</p>
+<h3 class="mini-card__title type-target">Решение под ключ с развитием и поддержкой</h3>
+<p class="price-card__note">Техническая поддержка, доработка логики оценки под ваш бизнес, расширенная аналитика.</p>
+<ul>
+<li>абоненская плата в месяц - 50 000 руб за техническую поддержку</li>
+<li>развернутая версия на облачном сервере со всеми необходимыми инструментами только для Вашей Компании</li>
+<li>Вы ни о чем не беспокоитесь</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<details class="detail-block detail-block--collapsible">
+<summary class="detail-block__summary">
+<p class="detail-block__title">Что можно улучшить</p>
+<span aria-hidden="true" class="detail-block__toggle"></span>
+</summary>
+<div class="detail-block__content-outer">
+<div class="detail-block__content-inner">
+<div class="detail-block__content">
+<div class="improve-grid">
+<div class="mini-card">
+<p class="mini-card__kicker">Расширение 01</p>
+<h3 class="mini-card__title type-target">Связать отчеты со звонками, письмами и задачами</h3>
+<p class="mini-card__text">
+                                      Тогда система сможет сопоставлять запись в CRM с реальными
+                                      коммуникациями и точнее понимать, была ли встреча
+                                      результативной и чем она закончилась.
+                                    </p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Расширение 02</p>
+<h3 class="mini-card__title type-target">Добавить рейтинг менеджеров по качеству встреч</h3>
+<p class="mini-card__text">
+                                      Руководитель увидит не только количество активности, но и
+                                      качество подготовки, результативность встреч и стабильность
+                                      ведения CRM по каждому сотруднику.
+                                    </p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Расширение 03</p>
+<h3 class="mini-card__title type-target">Настроить автоматические сигналы о сомнительных отчетах</h3>
+<p class="mini-card__text">
+                                      Если отчет выглядит скопированным, слишком общим или не
+                                      содержит следующего шага, система может сама уведомлять
+                                      руководителя или ставить задачу на проверку.
+                                    </p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Расширение 04</p>
+<h3 class="mini-card__title type-target">Сделать AI-подсказки перед следующей встречей</h3>
+<p class="mini-card__text">
+                                      На основе истории контактов ИИ может предлагать менеджеру
+                                      аргументы, риски, вопросы и следующий лучший шаг перед новым
+                                      визитом к заказчику.
+                                    </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</details>
+</div>
+<div class="archive-item-shell">
+<details class="archive-item">
+<summary class="archive-item__head">
+<span class="archive-item__lead">
+<span aria-hidden="true" class="archive-item__icon-rail">
+<picture>
+<source srcset="/automation-ai-assistant-docs-v3.webp" type="image/webp" />
+<img alt="" class="archive-item__icon" width="96" height="96" src="/automation-ai-assistant-docs-v3.png" decoding="async" loading="lazy" />
+</picture>
+</span>
+<span class="archive-item__title-wrap">
+<span class="archive-item__index">03</span>
+<span class="archive-item__title">AI-Ассистент, обученный на документах компании</span>
+</span>
+</span>
+<span aria-hidden="true" class="archive-item__toggle"></span>
+</summary>
+<div class="archive-item__panel-outer">
+<div class="archive-item__panel-inner">
+<div class="archive-item__panel">
+<p class="example-intro">Мгновенные ответы на сайте 24/7, разгрузка менеджеров до 50% времени. Клиент получает ответ не через час, а через 10 секунд.</p>
+<div class="example-grid">
+<div class="archive-file">
+<p class="archive-file__label">Проблема</p>
+<div class="archive-file__body">
+<ol>
+<li><strong>Потеря лидов из-за долгого ответа</strong> – 80% клиентов не ждут дольше 5 минут.</li>
+<li><strong>Отдел продаж загружен рутинными вопросами</strong> (характеристики, цены, сроки).</li>
+<li><strong>Информация разбросана по десяткам файлов</strong> (прайсы, инструкции, регламенты).</li>
+</ol>
+</div>
+</div>
+<div class="archive-file">
+<p class="archive-file__label">Решение</p>
+<div class="archive-file__body">
+<ol>
+<li><strong>Загружаем все внутренние документы в базу знаний</strong> (PDF, Word, Excel, сайт).</li>
+<li><strong>На сайт подключаем AI-ассистента</strong> – он отвечает на русском языке, ссылаясь только на ваши файлы.</li>
+<li><strong>Сложные вопросы передаются менеджеру</strong> с полным контекстом диалога.</li>
+</ol>
+</div>
+</div>
+<div class="archive-file">
+<p class="archive-file__label">Результат</p>
+<div class="archive-file__body">
+<ol>
+<li><strong>Конверсия в заявку растёт на 20–35%</strong> за счёт быстрого ответа.</li>
+<li><strong>Менеджеры тратят на рутину на 30–50% меньше времени.</strong></li>
+<li><strong>Сайт работает как полноценный консультант 24/7 без перерывов.</strong></li>
+</ol>
+</div>
+</div>
+</div>
+<div class="detail-sections">
+<details class="detail-block detail-block--collapsible">
+<summary class="detail-block__summary">
+<p class="detail-block__title">Автоматизация</p>
+<span aria-hidden="true" class="detail-block__toggle"></span>
+</summary>
+<div class="detail-block__content-outer">
+<div class="detail-block__content-inner">
+<div class="detail-block__content">
+<div class="process-grid">
+<div class="mini-card">
+<p class="mini-card__kicker">Шаг 01</p>
+<h3 class="mini-card__title type-target">Подготовка базы знаний</h3>
+<p class="mini-card__text">Загружаем документы, чистим, разбиваем на чанки, создаём векторную БД.</p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Шаг 02</p>
+<h3 class="mini-card__title type-target">Виджет на сайт</h3>
+<p class="mini-card__text">Устанавливаем чат-бота с кастомизацией под бренд.</p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Шаг 03</p>
+<h3 class="mini-card__title type-target">AI-поиск ответа</h3>
+<p class="mini-card__text">Точные ответы на вопросы клиентов, ссылки на источники.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<details class="detail-block detail-block--collapsible">
+<summary class="detail-block__summary">
+<p class="detail-block__title">Что получите</p>
+<span aria-hidden="true" class="detail-block__toggle"></span>
+</summary>
+<div class="detail-block__content-outer">
+<div class="detail-block__content-inner">
+<div class="detail-block__content">
+<div class="outcome-grid">
+<div class="mini-card">
+<p class="mini-card__kicker">Результат 01</p>
+<h3 class="mini-card__title type-target">Рост удовлетворённости клиентов</h3>
+<p class="mini-card__text">Быстрые ответы → больше доверия и повторных обращений.</p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Результат 02</p>
+<h3 class="mini-card__title type-target">Экономия фонда оплаты труда</h3>
+<p class="mini-card__text">Снижение нагрузки на поддержку и отдел продаж.</p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Результат 03</p>
+<h3 class="mini-card__title type-target">Возможность сделать отдельного Ассистента в ТГ для помощи как сотрудникам, так и Клиентам.</h3>
+<p class="mini-card__text">Узнаёте, что чаще всего ищут клиенты, и улучшаете сайт.</p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Результат 04</p>
+<h3 class="mini-card__title type-target">Единый стандарт консультации</h3>
+<p class="mini-card__text">Бот не ошибается и не забывает важные детали.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<details class="detail-block detail-block--collapsible">
+<summary class="detail-block__summary">
+<p class="detail-block__title">Стоимость</p>
+<span aria-hidden="true" class="detail-block__toggle"></span>
+</summary>
+<div class="detail-block__content-outer">
+<div class="detail-block__content-inner">
+<div class="detail-block__content">
+<div class="pricing-grid">
+<div class="mini-card price-card">
+<span class="price-card__tag">Базовый (MVP)</span>
+<p class="price-card__value type-target">80 000 ₽</p>
+<h3 class="mini-card__title type-target">MVP-ассистент на сайте</h3>
+<p class="price-card__note">Подготовка базы знаний (до 50 документов), виджет на сайт, ответы на типовые вопросы.</p>
+<ul>
+<li>тестовый период 2 недели для доработки</li>
+<li>до 1000 диалогов в месяц</li>
+<li>русскоязычная модель</li>
+</ul>
+</div>
+<div class="mini-card price-card">
+<span class="price-card__tag">Профессиональный</span>
+<p class="price-card__value type-target">150 000 ₽</p>
+<h3 class="mini-card__title type-target">Серверный AI-консультант с логикой передачи лидов</h3>
+<p class="price-card__note">Неограниченное количество документов, помощь в развертывании БД на сервере.</p>
+<ul>
+<li>передача лидов в отдел продаж</li>
+<li>настройка сценариев под бизнес</li>
+<li>техподдержка 1 месяц</li>
+</ul>
+</div>
+<div class="mini-card price-card">
+<span class="price-card__tag">Enterprise</span>
+<p class="price-card__value type-target">320 000 ₽</p>
+<h3 class="mini-card__title type-target">Решение под ключ с развитием и поддержкой</h3>
+<p class="price-card__note">Техническая поддержка (ежемесячная плата 50 000), полное развертывание в облачном сервере, масштабирование на несколько каналов (Telegram, сайт).</p>
+<ul>
+<li>Вы ни о чем не беспокоитесь</li>
+<li>доработка под требования безопасности</li>
+<li>регулярное обновление базы</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<details class="detail-block detail-block--collapsible">
+<summary class="detail-block__summary">
+<p class="detail-block__title">Что можно улучшить</p>
+<span aria-hidden="true" class="detail-block__toggle"></span>
+</summary>
+<div class="detail-block__content-outer">
+<div class="detail-block__content-inner">
+<div class="detail-block__content">
+<div class="improve-grid">
+<div class="mini-card">
+<p class="mini-card__kicker">Расширение 01</p>
+<h3 class="mini-card__title type-target">Связать ассистента с CRM и формами обратной связи</h3>
+<p class="mini-card__text">
+                                      Тогда обращения, ключевые вопросы и готовность клиента к
+                                      следующему шагу будут сразу попадать в рабочий контур без
+                                      ручного переноса и потери контекста.
+                                    </p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Расширение 02</p>
+<h3 class="mini-card__title type-target">Добавить сценарии под разные продукты и сегменты клиентов</h3>
+<p class="mini-card__text">
+                                      Ассистент сможет по-разному вести диалог с новым клиентом,
+                                      действующим заказчиком, дилером или техническим специалистом,
+                                      повышая точность и полезность консультации.
+                                    </p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Расширение 03</p>
+<h3 class="mini-card__title type-target">Ассистента можно параллельно сделать через Телеграмм и тогда он станет незаменимым помощником не только внешним заказчикам и потенциальным клиентам, но и для сотрудников компаний.</h3>
+<p class="mini-card__text">
+                                      Это даст один и тот же интеллектуальный контур не только на
+                                      сайте, но и в привычном канале общения, где можно быстро
+                                      консультировать клиентов, партнеров и внутреннюю команду.
+                                    </p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Расширение 04</p>
+<h3 class="mini-card__title type-target">Подключить аналитику вопросов и слабых мест сайта</h3>
+<p class="mini-card__text">
+                                      Бизнес увидит, что люди спрашивают чаще всего, где не хватает
+                                      информации на страницах и какие темы стоит вынести в контент,
+                                      каталог или коммерческие материалы.
+                                    </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</details>
+</div>
+<div class="archive-item-shell">
+<details class="archive-item">
+<summary class="archive-item__head">
+<span class="archive-item__lead">
+<span aria-hidden="true" class="archive-item__icon-rail">
+<picture>
+<source srcset="/automation-landing-business-logo.webp" type="image/webp" />
+<img alt="" class="archive-item__icon" width="96" height="96" src="/automation-landing-business-logo.png" decoding="async" loading="lazy" />
+</picture>
+</span>
+<span class="archive-item__title-wrap">
+<span class="archive-item__index">04</span>
+<span class="archive-item__title">Лендинг для бизнеса (продающий сайт)</span>
+</span>
+</span>
+<span aria-hidden="true" class="archive-item__toggle"></span>
+</summary>
+<div class="archive-item__panel-outer">
+<div class="archive-item__panel-inner">
+<div class="archive-item__panel">
+<p class="example-intro">Готовый одностраничный сайт с админ-панелью, управляемым контентом и AI-чатом. Стоимость – от 50 000 ₽ (базовый лендинг). Подробности уточняйте в личном сообщении.</p>
+<div class="example-grid">
+<div class="archive-file">
+<p class="archive-file__label">Проблема</p>
+<div class="archive-file__body">
+<ol>
+<li>
+<strong>Обычный сайт часто не помогает бизнесу продавать понятнее.</strong>
+                                Даже если страница выглядит современно, посетителю бывает сложно
+                                быстро понять, чем компания полезна, какие задачи решает и куда
+                                нажимать дальше, чтобы перейти к диалогу.
+                              </li>
+<li>
+<strong>Контент быстро устаревает, если каждую правку нужно делать через разработчика.</strong>
+                                Тексты, контакты, презентация и другие материалы меняются, но без
+                                управляемой админ-панели сайт начинает отставать от реальной работы
+                                компании.
+                              </li>
+<li>
+<strong>Часть обращений теряется, когда сайт не умеет подхватывать интерес клиента.</strong>
+                                Если посетитель не получает быстрый ответ, не видит понятный CTA и не
+                                может сразу скачать материалы или перейти к контакту, интерес остывает
+                                еще до первого разговора.
+                              </li>
+</ol>
+</div>
+</div>
+<div class="archive-file">
+<p class="archive-file__label">Решение</p>
+<div class="archive-file__body">
+<ol>
+<li>
+<strong>Собирается структурный лендинг с деловой подачей и понятными сценариями.</strong>
+                                На сайте выстраиваются сильный первый экран, блоки с болями бизнеса,
+                                примерами автоматизации, результатами, FAQ, финальными CTA и
+                                контактами, чтобы посетитель проходил страницу последовательно и без
+                                лишней путаницы.
+                              </li>
+<li>
+<strong>Контент сайта становится управляемым через админ-панель.</strong>
+                                Можно редактировать тексты ключевых секций, обновлять контакты,
+                                включать или отключать нужные элементы, а также загружать презентацию
+                                и документы без постоянных правок в коде.
+                              </li>
+<li>
+<strong>На сайте работает AI-ассистент для первого контакта и навигации по запросу.</strong>
+                                Чат-виджет помогает посетителю задать вопрос, быстрее разобраться в
+                                предложении компании и перейти к следующему шагу: звонку, сообщению или
+                                живому общению с менеджером.
+                              </li>
+</ol>
+</div>
+</div>
+<div class="archive-file">
+<p class="archive-file__label">Результат</p>
+<div class="archive-file__body">
+<ol>
+<li>
+<strong>Сайт начинает презентовать бизнес как систему, а не как набор случайных блоков.</strong>
+                                Компания получает аккуратную визуальную подачу, понятную структуру и
+                                страницу, на которой посетителю легче доверять, разбираться и
+                                принимать решение о следующем контакте.
+                              </li>
+<li>
+<strong>Лендинг остается живым и управляемым после запуска.</strong>
+                                Тексты, материалы и контакты можно актуализировать без долгого цикла
+                                доработок, поэтому сайт продолжает работать на бизнес, а не устаревает
+                                через несколько недель после публикации.
+                              </li>
+<li>
+<strong>У бизнеса появляется инструмент, который одновременно показывает, объясняет и ведет к заявке.</strong>
+                                Посетитель может прочитать суть предложения, посмотреть примеры,
+                                скачать презентацию, уточнить вопрос в чате и сразу перейти к
+                                удобному каналу связи.
+                              </li>
+</ol>
+</div>
+</div>
+</div>
+<div class="detail-sections">
+<details class="detail-block detail-block--collapsible">
+<summary class="detail-block__summary">
+<p class="detail-block__title">Автоматизация</p>
+<span aria-hidden="true" class="detail-block__toggle"></span>
+</summary>
+<div class="detail-block__content-outer">
+<div class="detail-block__content-inner">
+<div class="detail-block__content">
+<div class="process-grid">
+<div class="mini-card">
+<p class="mini-card__kicker">Шаг 01</p>
+<h3 class="mini-card__title type-target">Структура и подача под задачи бизнеса</h3>
+<p class="mini-card__text">
+                                      Сайт выстраивается вокруг реальных смыслов компании: чем она
+                                      полезна, какие проблемы решает, какие кейсы показывает и как
+                                      посетитель должен двигаться по странице к следующему действию.
+                                    </p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Шаг 02</p>
+<h3 class="mini-card__title type-target">Управляемые тексты, контакты и материалы</h3>
+<p class="mini-card__text">
+                                      Через админ-панель можно редактировать тексты секций, менять
+                                      контакты, включать нужные элементы и загружать файлы, чтобы сайт
+                                      оставался актуальным без ручной пересборки каждой мелочи.
+                                    </p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Шаг 03</p>
+<h3 class="mini-card__title type-target">AI-чат и сценарии перехода к контакту</h3>
+<p class="mini-card__text">
+                                      Чат-виджет помогает отвечать на первые вопросы, а кнопки,
+                                      презентация и блоки связи подталкивают посетителя к звонку,
+                                      Telegram или другому удобному каналу общения.
+                                    </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<details class="detail-block detail-block--collapsible">
+<summary class="detail-block__summary">
+<p class="detail-block__title">Что в итоге получит бизнес</p>
+<span aria-hidden="true" class="detail-block__toggle"></span>
+</summary>
+<div class="detail-block__content-outer">
+<div class="detail-block__content-inner">
+<div class="detail-block__content">
+<div class="outcome-grid">
+<div class="mini-card">
+<p class="mini-card__kicker">Результат 01</p>
+<h3 class="mini-card__title type-target">Понятную презентацию компании на одной странице</h3>
+<p class="mini-card__text">
+                                      Посетитель быстро видит позиционирование, преимущества,
+                                      примеры решений и формат работы, не собирая картину бизнеса по
+                                      кусочкам из разных источников.
+                                    </p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Результат 02</p>
+<h3 class="mini-card__title type-target">Управляемый контент и обновляемые материалы</h3>
+<p class="mini-card__text">
+                                      Бизнес сможет обновлять тексты, контакты и презентационные
+                                      файлы так, чтобы сайт оставался живым инструментом продаж, а не
+                                      застывшей версией старой информации.
+                                    </p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Результат 03</p>
+<h3 class="mini-card__title type-target">AI-ассистента для первого диалога с посетителем</h3>
+<p class="mini-card__text">
+                                      Часть типовых вопросов можно закрывать прямо на сайте, а более
+                                      заинтересованного посетителя быстрее переводить к человеку без
+                                      лишней паузы на старте общения.
+                                    </p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Результат 04</p>
+<h3 class="mini-card__title type-target">Несколько CTA и удобные точки входа в контакт</h3>
+<p class="mini-card__text">
+                                      На странице работают заметные кнопки, блок контактов, переход к
+                                      Telegram, телефон и возможность скачать презентацию, чтобы
+                                      клиенту было проще сделать следующий шаг.
+                                    </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<details class="detail-block detail-block--collapsible">
+<summary class="detail-block__summary">
+<p class="detail-block__title">Стоимость проекта</p>
+<span aria-hidden="true" class="detail-block__toggle"></span>
+</summary>
+<div class="detail-block__content-outer">
+<div class="detail-block__content-inner">
+<div class="detail-block__content">
+<div class="pricing-grid">
+<div class="mini-card price-card">
+<span class="price-card__tag">Вариант 1</span>
+<p class="price-card__value type-target">от 50 000</p>
+<h3 class="mini-card__title type-target">Базовый лендинг с готовой структурой</h3>
+<p class="price-card__note">
+                                      Подходит, если нужно быстро собрать аккуратную страницу с
+                                      понятной подачей услуг и основными сценариями связи.
+                                    </p>
+<ul>
+<li>первый экран, смысловые блоки и CTA;</li>
+<li>адаптация под текущую компанию и оффер;</li>
+<li>базовое наполнение контентом.</li>
+</ul>
+</div>
+<div class="mini-card price-card">
+<span class="price-card__tag">Вариант 2</span>
+<p class="price-card__value type-target">от 120 000</p>
+<h3 class="mini-card__title type-target">Рабочий сайт с админ-панелью и файлами</h3>
+<p class="price-card__note">
+                                      Полноценный вариант, где лендинг уже становится управляемым
+                                      инструментом для бизнеса, а не только страницей-презентацией.
+                                    </p>
+<ul>
+<li>редактирование текстов и контактов;</li>
+<li>загрузка презентации и документов;</li>
+<li>гибкая настройка ключевых элементов сайта.</li>
+</ul>
+</div>
+<div class="mini-card price-card">
+<span class="price-card__tag">Вариант 3</span>
+<p class="price-card__value type-target">от 250 000</p>
+<h3 class="mini-card__title type-target">Лендинг как цифровой инструмент продаж</h3>
+<p class="price-card__note">
+                                      Решение под ключ для компаний, которым нужен не просто дизайн,
+                                      а связка контента, AI-помощника, материалов и сценариев захвата
+                                      обращения.
+                                    </p>
+<ul>
+<li>встроенный AI-ассистент и контактные сценарии;</li>
+<li>серверное хранение управляемого контента;</li>
+<li>база для дальнейшего развития сайта и автоматизаций.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<details class="detail-block detail-block--collapsible">
+<summary class="detail-block__summary">
+<p class="detail-block__title">Что можно улучшить</p>
+<span aria-hidden="true" class="detail-block__toggle"></span>
+</summary>
+<div class="detail-block__content-outer">
+<div class="detail-block__content-inner">
+<div class="detail-block__content">
+<div class="improve-grid">
+<div class="mini-card">
+<p class="mini-card__kicker">Расширение 01</p>
+<h3 class="mini-card__title type-target">Связать сайт с CRM и захватом лидов</h3>
+<p class="mini-card__text">
+                                      Тогда обращения с лендинга, чата и кнопок связи будут сразу
+                                      попадать в рабочий контур без ручного переноса и потери
+                                      контекста.
+                                    </p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Расширение 02</p>
+<h3 class="mini-card__title type-target">Добавить отдельные сценарии под услуги и сегменты</h3>
+<p class="mini-card__text">
+                                      Можно развести подачу под разные продукты, отрасли или типы
+                                      клиентов, чтобы страница точнее говорила с каждой аудиторией.
+                                    </p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Расширение 03</p>
+<h3 class="mini-card__title type-target">Расширить AI-ассистента по материалам компании</h3>
+<p class="mini-card__text">
+                                      Ассистента можно глубже обучить на презентациях, FAQ,
+                                      регламентах и описаниях услуг, чтобы он точнее отвечал и лучше
+                                      поддерживал первый диалог.
+                                    </p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Расширение 04</p>
+<h3 class="mini-card__title type-target">Подключить аналитику вопросов и конверсий</h3>
+<p class="mini-card__text">
+                                      Бизнес увидит, какие блоки и CTA работают лучше, что чаще
+                                      спрашивают посетители и где стоит усиливать контент или
+                                      предложение на сайте.
+                                    </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</details>
+</div>
+<div class="archive-item-shell">
+<details class="archive-item">
+<summary class="archive-item__head">
+<span class="archive-item__lead">
+<span class="archive-item__title-wrap">
+<span class="archive-item__index">05</span>
+<span class="archive-item__title">Парсинг сайтов / мониторинг конкурентов</span>
+</span>
+</span>
+<span aria-hidden="true" class="archive-item__toggle"></span>
+</summary>
+<div class="archive-item__panel-outer">
+<div class="archive-item__panel-inner">
+<div class="archive-item__panel">
+<p class="example-intro">Автоматический сбор цен, акций, ассортимента с сайтов конкурентов. Стоимость проектов – от 50 000 ₽ (под ключ с отчётом в Excel). Точную цену – по запросу.</p>
+<div class="example-grid">
+<div class="archive-file">
+<p class="archive-file__label">Проблема</p>
+<div class="archive-file__body">
+<ol>
+<li>
+<strong>Рынок меняется быстрее, чем команда успевает его отслеживать.</strong>
+                                Цены, акции, ассортимент, новые офферы и изменения на сайтах конкурентов
+                                появляются постоянно, но ручной мониторинг отнимает слишком много времени
+                                и почти никогда не бывает регулярным.
+                              </li>
+<li>
+<strong>Решения по ценам и позиционированию принимаются на неполной картине.</strong>
+                                Если бизнес не видит реальное движение конкурентов, сложно понимать,
+                                где компания переоценена, где недооценена и какие предложения на рынке
+                                начинают выбивать внимание клиента.
+                              </li>
+<li>
+<strong>Часть важных сайтов сложно парсить стандартными методами.</strong>
+                                Многие площадки защищены от простого сбора данных, используют сложную
+                                структуру, динамический контент и ограничения, из-за чего обычные
+                                инструменты быстро перестают давать результат.
+                              </li>
+</ol>
+</div>
+</div>
+<div class="archive-file">
+<p class="archive-file__label">Решение</p>
+<div class="archive-file__body">
+<ol>
+<li>
+<strong>Система автоматически собирает нужные данные с выбранных сайтов.</strong>
+                                Под задачу бизнеса настраивается парсинг цен, товаров, услуг, акций,
+                                ассортимента, изменений в карточках и другой информации, которая важна
+                                для ежедневного мониторинга рынка.
+                              </li>
+<li>
+<strong>Парсинг строится под реальные источники, включая сложную защиту.</strong>
+                                При необходимости используются более продвинутые сценарии сбора данных,
+                                чтобы получать информацию даже с сайтов, где стандартный подход уже не
+                                работает.
+                              </li>
+<li>
+<strong>После сбора данные превращаются в понятные отчеты и выводы.</strong>
+                                Информация очищается, приводится к единому формату, а при подключении ИИ
+                                система помогает выделять изменения, находить аномалии и формировать
+                                краткие аналитические выжимки для бизнеса.
+                              </li>
+</ol>
+</div>
+</div>
+<div class="archive-file">
+<p class="archive-file__label">Результат</p>
+<div class="archive-file__body">
+<ol>
+<li>
+<strong>Бизнес видит рынок не эпизодически, а системно.</strong>
+                                Руководитель и команда получают регулярную картину по конкурентам:
+                                изменению цен, акциям, ассортименту и другим сигналам, которые влияют
+                                на продажи и стратегию.
+                              </li>
+<li>
+<strong>Ценовое позиционирование становится более точным и управляемым.</strong>
+                                Можно быстрее понимать, как выглядит предложение компании на фоне
+                                рынка, где нужны корректировки, а где можно усиливать маржу или менять
+                                подачу.
+                              </li>
+<li>
+<strong>Сырые данные превращаются в конкретные действия.</strong>
+                                Вместо ручных таблиц и хаотичных наблюдений бизнес получает структурные
+                                сводки, сигналы о важных изменениях и основу для быстрых решений по
+                                ассортименту, ценам и активности.
+                              </li>
+</ol>
+</div>
+</div>
+</div>
+<div class="detail-sections">
+<details class="detail-block detail-block--collapsible">
+<summary class="detail-block__summary">
+<p class="detail-block__title">Автоматизация</p>
+<span aria-hidden="true" class="detail-block__toggle"></span>
+</summary>
+<div class="detail-block__content-outer">
+<div class="detail-block__content-inner">
+<div class="detail-block__content">
+<div class="process-grid">
+<div class="mini-card">
+<p class="mini-card__kicker">Шаг 01</p>
+<h3 class="mini-card__title type-target">Подключение источников и правил сбора</h3>
+<p class="mini-card__text">
+                                      Определяются сайты, карточки, категории и параметры, которые нужно
+                                      отслеживать: цены, акции, ассортимент, наличие, описания,
+                                      активности и другие элементы под задачу бизнеса.
+                                    </p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Шаг 02</p>
+<h3 class="mini-card__title type-target">Сбор данных даже со сложных сайтов</h3>
+<p class="mini-card__text">
+                                      Настраивается рабочий контур парсинга, который учитывает защиту,
+                                      динамическую загрузку, структуру страниц и другие сложности, чтобы
+                                      данные действительно собирались регулярно.
+                                    </p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Шаг 03</p>
+<h3 class="mini-card__title type-target">Сводка изменений и аналитическая выдача</h3>
+<p class="mini-card__text">
+                                      На выходе бизнес получает не просто массив данных, а понятную
+                                      сводку по изменениям, сигналам рынка и важным отклонениям, которые
+                                      требуют внимания.
+                                    </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<details class="detail-block detail-block--collapsible">
+<summary class="detail-block__summary">
+<p class="detail-block__title">Что в итоге получит бизнес</p>
+<span aria-hidden="true" class="detail-block__toggle"></span>
+</summary>
+<div class="detail-block__content-outer">
+<div class="detail-block__content-inner">
+<div class="detail-block__content">
+<div class="outcome-grid">
+<div class="mini-card">
+<p class="mini-card__kicker">Отчет 01</p>
+<h3 class="mini-card__title type-target">Картину по ценам и изменениям на рынке</h3>
+<p class="mini-card__text">
+                                      Видно, как меняются цены на товары и услуги, кто запускает акции,
+                                      какие позиции обновляются и где рынок начинает двигаться быстрее
+                                      обычного.
+                                    </p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Отчет 02</p>
+<h3 class="mini-card__title type-target">Мониторинг конкурентов без ручной рутины</h3>
+<p class="mini-card__text">
+                                      Команде больше не нужно ежедневно вручную проверять десятки сайтов:
+                                      ключевая информация собирается автоматически и приходит в удобном
+                                      формате.
+                                    </p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Отчет 03</p>
+<h3 class="mini-card__title type-target">Понимание ценового позиционирования компании</h3>
+<p class="mini-card__text">
+                                      Бизнес видит, как его предложение выглядит на фоне конкурентов, и
+                                      может точнее управлять ценой, скидками, наполнением оффера и
+                                      подачей.
+                                    </p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Формат</p>
+<h3 class="mini-card__title type-target">Краткие отчеты и сигналы по важным изменениям</h3>
+<p class="mini-card__text">
+                                      Можно получать регулярные сводки, уведомления о скачках цен,
+                                      изменениях ассортимента, новых акциях и других событиях, которые
+                                      важны для принятия решений.
+                                    </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<details class="detail-block detail-block--collapsible">
+<summary class="detail-block__summary">
+<p class="detail-block__title">Стоимость проекта</p>
+<span aria-hidden="true" class="detail-block__toggle"></span>
+</summary>
+<div class="detail-block__content-outer">
+<div class="detail-block__content-inner">
+<div class="detail-block__content">
+<div class="pricing-grid">
+<div class="mini-card price-card">
+<span class="price-card__tag">Вариант 1</span>
+<p class="price-card__value type-target">от 50 000</p>
+<h3 class="mini-card__title type-target">Базовый мониторинг сайтов и цен</h3>
+<p class="price-card__note">
+                                      Подходит для быстрого запуска контроля по ограниченному списку
+                                      сайтов и ключевых параметров.
+                                    </p>
+<ul>
+<li>сбор базовых данных по товарам, услугам и ценам;</li>
+<li>простая сводка по изменениям;</li>
+<li>регулярный запуск по расписанию.</li>
+</ul>
+</div>
+<div class="mini-card price-card">
+<span class="price-card__tag">Вариант 2</span>
+<p class="price-card__value type-target">от 120 000</p>
+<h3 class="mini-card__title type-target">Рабочая система конкурентного мониторинга</h3>
+<p class="price-card__note">
+                                      Полноценный вариант для регулярного отслеживания рынка,
+                                      конкурентов, ассортимента и ценового позиционирования.
+                                    </p>
+<ul>
+<li>несколько источников и сложные сценарии сбора;</li>
+<li>хранение истории и сравнений;</li>
+<li>уведомления и управленческие отчеты.</li>
+</ul>
+</div>
+<div class="mini-card price-card">
+<span class="price-card__tag">Вариант 3</span>
+<p class="price-card__value type-target">от 250 000</p>
+<h3 class="mini-card__title type-target">Аналитический контур с AI-обработкой данных</h3>
+<p class="price-card__note">
+                                      Решение под ключ, где после парсинга подключается аналитика,
+                                      сравнение трендов и краткие AI-отчеты для бизнеса.
+                                    </p>
+<ul>
+<li>сбор данных даже со сложных площадок;</li>
+<li>AI-анализ изменений и аномалий;</li>
+<li>развитие системы под конкретные бизнес-задачи.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<details class="detail-block detail-block--collapsible">
+<summary class="detail-block__summary">
+<p class="detail-block__title">Что можно улучшить</p>
+<span aria-hidden="true" class="detail-block__toggle"></span>
+</summary>
+<div class="detail-block__content-outer">
+<div class="detail-block__content-inner">
+<div class="detail-block__content">
+<div class="improve-grid">
+<div class="mini-card">
+<p class="mini-card__kicker">Расширение 01</p>
+<h3 class="mini-card__title type-target">Добавить AI-анализ и краткие отчеты по данным</h3>
+<p class="mini-card__text">
+                                      После парсинга ИИ может сам выделять главное, сравнивать
+                                      изменения, находить интересные сигналы и готовить краткую
+                                      выжимку для руководителя.
+                                    </p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Расширение 02</p>
+<h3 class="mini-card__title type-target">Сегментировать конкурентов по категориям и регионам</h3>
+<p class="mini-card__text">
+                                      Это позволит смотреть не просто рынок в целом, а отдельные
+                                      сегменты, регионы, ценовые группы и более точно понимать свое
+                                      место среди конкурентов.
+                                    </p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Расширение 03</p>
+<h3 class="mini-card__title type-target">Подключить сигналы о резких изменениях и новых акциях</h3>
+<p class="mini-card__text">
+                                      Система сможет сразу уведомлять, если конкурент резко меняет цену,
+                                      запускает акцию, убирает товар из каталога или обновляет важную
+                                      часть предложения.
+                                    </p>
+</div>
+<div class="mini-card">
+<p class="mini-card__kicker">Расширение 04</p>
+<h3 class="mini-card__title type-target">Связать мониторинг с внутренними решениями компании</h3>
+<p class="mini-card__text">
+                                      На основе собранной информации можно автоматически формировать
+                                      задачи, обновлять внутренние отчеты и использовать данные в
+                                      контуре продаж, закупок или маркетинга.
+                                    </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</details>
+</div>
+</div>
+</div>
+</section>
+</main>
+<script>
+      (() => {
+        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        const TYPE_STEP_MS = 36;
+        const PAUSE_BETWEEN_TARGETS_MS = 300;
+        const detailBlocks = Array.from(document.querySelectorAll(".detail-block--collapsible"));
+
+        detailBlocks.forEach((block) => {
+          const targets = Array.from(block.querySelectorAll(".type-target"));
+
+          targets.forEach((target) => {
+            if (!target.dataset.fullText) {
+              target.dataset.fullText = target.textContent.trim();
+            }
+          });
+
+          block._typeTimers = [];
+
+          block.addEventListener("toggle", () => {
+            if (block.open) {
+              if (reducedMotion.matches) {
+                restoreTargets(block);
+                return;
+              }
+
+              resetTargets(block);
+              void typeTargets(block);
+            } else {
+              restoreTargets(block);
+            }
+          });
+        });
+
+        function clearTimers(block) {
+          (block._typeTimers || []).forEach((timerId) => window.clearTimeout(timerId));
+          block._typeTimers = [];
+        }
+
+        function delay(block, ms) {
+          return new Promise((resolve) => {
+            const timerId = window.setTimeout(resolve, ms);
+            block._typeTimers.push(timerId);
+          });
+        }
+
+        function restoreTargets(block) {
+          clearTimers(block);
+
+          block.querySelectorAll(".type-target").forEach((target) => {
+            target.textContent = target.dataset.fullText || "";
+          });
+        }
+
+        function resetTargets(block) {
+          clearTimers(block);
+
+          block.querySelectorAll(".type-target").forEach((target) => {
+            target.textContent = "";
+          });
+        }
+
+        async function typeTargets(block) {
+          const targets = Array.from(block.querySelectorAll(".type-target"));
+
+          for (const target of targets) {
+            const fullText = target.dataset.fullText || "";
+            target.textContent = "";
+
+            for (let i = 1; i <= fullText.length; i += 1) {
+              if (!block.open) return;
+
+              target.textContent = fullText.slice(0, i);
+              const caret = document.createElement("span");
+              caret.className = "type-caret";
+              caret.setAttribute("aria-hidden", "true");
+              target.append(caret);
+
+              await delay(block, TYPE_STEP_MS);
+            }
+
+            target.textContent = fullText;
+            await delay(block, PAUSE_BETWEEN_TARGETS_MS);
+          }
+        }
+      })();
+    </script>
+<div id="ai-chat-root"></div>
+<script type="module" src="/src/automationExamplesChatEntry.tsx"></script>
+</body>
+</html>

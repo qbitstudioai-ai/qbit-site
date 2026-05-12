@@ -35,7 +35,7 @@ export const cookieConsent = {
   acceptLabel: "Принять",
 } as const;
 
-/** Плавающий чат с ИИ (иконка /public/chat-widget-icon.webp; бэкенд — VITE_AI_CHAT_URL) */
+/** Плавающий чат с ИИ (иконка /public/chat-widget-icon.webp; VITE_AI_CHAT_URL → обычно Webhook n8n) */
 export const aiChat = {
   title: "Чат с ИИ",
   welcome:
@@ -44,6 +44,8 @@ export const aiChat = {
   sendLabel: "Отправить",
   openLabel: "Открыть чат с ИИ",
   closeLabel: "Закрыть",
+  /** Верхняя полоска панели — потянуть, чтобы увеличить или уменьшить высоту */
+  resizeLabel: "Изменить высоту панели — потянуть вверх или вниз",
 } as const;
 
 /** Компактное меню только в шапке */

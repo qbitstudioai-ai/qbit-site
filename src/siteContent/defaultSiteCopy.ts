@@ -35,7 +35,7 @@ export function buildDefaultSiteCopy() {
     hero: {
       ...hero,
       ctaTelegramLabel: "Написать в Telegram",
-      ctaPresentationLabel: "Посмотреть сценарии автоматизации",
+      ctaPresentationLabel: "Примеры автоматизации",
       dashboardImageAlt:
         "Панель показателей: рост прибыли, ускорение обработки данных, рентабельность и динамика по месяцам",
     },

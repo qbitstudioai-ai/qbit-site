@@ -8,7 +8,9 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "generate-favicon": "node scripts/generate-favicon-png.mjs",
     "optimize:raster-icons": "node scripts/convert-embedded-svg-to-webp.mjs",
+    "optimize:automation-icons": "node scripts/convert-automation-example-icons.mjs",
     "trim:webp-icons": "node scripts/trim-webp-icons.mjs",
     "supabase": "supabase",
     "supabase:version": "supabase --version",
@@ -34,6 +36,7 @@
     "globals": "^17.4.0",
     "sharp": "^0.34.5",
     "supabase": "^2.88.1",
+    "to-ico": "^1.1.5",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.58.0",
     "vite": "^8.0.4"

@@ -35,12 +35,12 @@ export function Footer() {
             <nav aria-labelledby="footer-contacts-heading">
               <ul className="site-footer__list">
                 <li>
-                  <a href={L.telegram} target="_blank" rel="noreferrer">
+                  <a href={L.telegram} target="_blank" rel="noopener noreferrer">
                     {footer.linkTelegram}
                   </a>
                 </li>
                 <li>
-                  <a href={L.vk} target="_blank" rel="noreferrer">
+                  <a href={L.vk} target="_blank" rel="noopener noreferrer">
                     {footer.linkVk}
                   </a>
                 </li>
