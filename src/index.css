@@ -1519,124 +1519,60 @@ section.section--has-ambient > .layout {
   color: var(--text-muted);
 }
 
-/* FAQ: пара карточек «вопрос | ответ» в стиле split-rail / почему мы */
-.faq-split-list {
+/* FAQ: аккордеон на <details>, анимация раскрытия как .archive-item в automation-examples */
+.faq-list {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.faq-split-row {
-  display: block;
-}
-
-.faq-split-row__pair {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  width: 100%;
-}
-
-@media (min-width: 640px) {
-  .faq-split-row {
-    display: flex;
-    justify-content: center;
-    align-items: stretch;
-    overflow-x: hidden;
-    overflow-x: clip;
-  }
-
-  /*
-   * Пара всегда на всю ширину: ширина колонок и переносы текста не меняются → нет «прыжков» соседних рядов.
-   * Сложено: ответ уезжает влево под вопрос только через transform (не влияет на поток).
-   */
-  .faq-split-row__pair {
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: stretch;
-    width: 100%;
-    max-width: 100%;
-    gap: 0.5rem;
-  }
-
-  .faq-split-row__pair .faq-split-card--q {
-    flex: 0.95 1 0;
-    min-width: 0;
-    position: relative;
-    z-index: 2;
-    transition:
-      opacity 0.45s ease,
-      filter 0.45s ease,
-      transform 0.55s cubic-bezier(0.33, 1, 0.68, 1);
-  }
-
-  .faq-split-row__pair .faq-split-card--a {
-    flex: 1.05 1 0;
-    min-width: 0;
-    z-index: 1;
-    opacity: 0.88;
-    filter: brightness(0.98);
-    /* −(ширина вопроса + gap) относительно ширины ответа: Wq = Wa×(0.95/1.05) */
-    transform: translateX(calc(-100% * 0.95 / 1.05 - 0.5rem));
-    transition:
-      opacity 0.45s ease,
-      filter 0.45s ease,
-      transform 0.55s cubic-bezier(0.33, 1, 0.68, 1);
-  }
-
-  .faq-split-row:is(:hover, :focus-within) .faq-split-card--a {
-    transform: none;
-    opacity: 1;
-    filter: none;
-  }
-
-  .faq-split-card--q:focus {
-    outline: none;
-  }
-
-  .faq-split-card--q:focus-visible {
-    outline: 2px solid var(--focus);
-    outline-offset: 3px;
-  }
-
-  @media (hover: none) and (pointer: coarse) {
-    .faq-split-row__pair .faq-split-card--a {
-      transform: none;
-      opacity: 1;
-      filter: none;
-    }
-  }
-}
-
-@media (min-width: 640px) and (prefers-reduced-motion: reduce) {
-  .faq-split-row__pair .faq-split-card--q,
-  .faq-split-row__pair .faq-split-card--a {
-    transition: none;
-  }
-
-  .faq-split-row__pair .faq-split-card--a {
-    transform: none;
-    opacity: 1;
-    filter: none;
-  }
-}
-
-.faq-split-card {
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  gap: clamp(0.325rem, 1vw, 0.5rem);
+.faq-item {
   margin: 0;
   border: 1px solid var(--border);
   border-radius: var(--radius);
+  overflow: hidden;
   background: var(--bg);
-  padding: 0.55rem 0.575rem;
   box-shadow:
     0 0 22px rgba(94, 232, 240, 0.38),
     0 0 52px rgba(46, 212, 196, 0.2);
 }
 
-.faq-split-card__rail {
+.faq-item__summary {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(0.325rem, 1vw, 0.5rem);
+  padding: 0.55rem 0.575rem;
+  list-style: none;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.faq-item__summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item__summary:focus {
+  outline: none;
+}
+
+.faq-item__summary:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.faq-item__summary-inner {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: clamp(0.325rem, 1vw, 0.5rem);
+  min-width: 0;
+}
+
+.faq-item__q-rail,
+.faq-item__a-rail {
   flex: 0 0 20%;
   max-width: 20%;
   min-width: 0;
@@ -1646,7 +1582,7 @@ section.section--has-ambient > .layout {
   justify-content: center;
 }
 
-#faq .faq-split-card__rail-img {
+#faq .faq-item__rail-img {
   display: block;
   width: 100%;
   max-width: 6.4375rem;
@@ -1655,21 +1591,14 @@ section.section--has-ambient > .layout {
   object-fit: contain;
 }
 
-.faq-split-card__main {
+.faq-item__q-wrap {
   flex: 1 1 auto;
   min-width: 0;
-}
-
-.faq-split-card--q .faq-split-card__main {
   display: flex;
   align-items: center;
 }
 
-.faq-split-card--a {
-  align-items: center;
-}
-
-.faq-split-card__q {
+.faq-item__q {
   margin: 0;
   font-size: 0.8125rem;
   font-weight: 600;
@@ -1677,11 +1606,84 @@ section.section--has-ambient > .layout {
   color: rgba(26, 162, 151, 1);
 }
 
-.faq-split-card__a {
+.faq-item__toggle {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(94, 232, 240, 0.28);
+  background: rgba(94, 232, 240, 0.08);
+  color: var(--text-muted);
+}
+
+.faq-item__toggle::before {
+  content: "+";
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.faq-item[open] .faq-item__toggle::before {
+  content: "−";
+}
+
+.faq-item[open] .faq-item__summary {
+  border-bottom: 1px solid var(--border);
+}
+
+.faq-item__panel-outer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.78s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.faq-item[open] .faq-item__panel-outer {
+  grid-template-rows: 1fr;
+}
+
+.faq-item__panel-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.faq-item__panel {
+  padding: 0.55rem 0.575rem;
+  opacity: 0;
+  transform: translateY(-0.5rem);
+  transition:
+    opacity 0.46s ease,
+    transform 0.68s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.faq-item[open] .faq-item__panel {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.faq-item__answer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: clamp(0.325rem, 1vw, 0.5rem);
+}
+
+.faq-item__a {
+  flex: 1 1 auto;
   margin: 0;
-  font-size: 0.75rem;
+  min-width: 0;
+  font-size: 0.875rem;
   line-height: 1.45;
   color: var(--text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq-item__panel-outer,
+  .faq-item__panel {
+    transition: none;
+  }
 }
 
 /* Соцсети и финальный CTA: pain-section, центр, карточки со свечением */

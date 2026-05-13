@@ -1,13 +1,22 @@
 import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
+import { createRoot, hydrateRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import { SiteSettingsProvider } from "./siteSettings/SiteSettingsContext";
+import { isAdminHash } from "./useHashAdmin";
 
-createRoot(document.getElementById("root")!).render(
+const rootEl = document.getElementById("root")!;
+const tree = (
   <StrictMode>
     <SiteSettingsProvider>
       <App />
     </SiteSettingsProvider>
-  </StrictMode>,
+  </StrictMode>
 );
+
+if (isAdminHash()) {
+  rootEl.innerHTML = "";
+  createRoot(rootEl).render(tree);
+} else {
+  hydrateRoot(rootEl, tree);
+}

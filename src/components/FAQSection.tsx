@@ -15,52 +15,57 @@ export function FAQSection() {
             {faq.title}
           </h2>
         </div>
-        <div className="faq-split-list">
+        <div className="faq-list">
           {faq.items.map((item, i) => {
             const qId = `${baseId}-q-${i}`;
             return (
-              <div key={item.q} className="faq-split-row" role="group" aria-labelledby={qId}>
-                <div className="faq-split-row__pair">
-                  <article className="faq-split-card faq-split-card--q" tabIndex={0}>
-                    <div className="faq-split-card__rail" aria-hidden="true">
+              <details key={`${i}-${item.q}`} className="faq-item">
+                <summary className="faq-item__summary">
+                  <span className="faq-item__summary-inner">
+                    <span className="faq-item__q-rail" aria-hidden="true">
                       {faq.questionIconSrc ? (
                         <img
-                          className="faq-split-card__rail-img"
+                          className="faq-item__rail-img"
                           src={faq.questionIconSrc}
                           alt=""
                           width={96}
                           height={96}
                           decoding="async"
-                          loading="lazy"
+                          loading={i === 0 ? "eager" : "lazy"}
                         />
                       ) : null}
-                    </div>
-                    <div className="faq-split-card__main">
-                      <h3 id={qId} className="faq-split-card__q">
+                    </span>
+                    <span className="faq-item__q-wrap">
+                      <h3 id={qId} className="faq-item__q">
                         {item.q}
                       </h3>
+                    </span>
+                  </span>
+                  <span aria-hidden="true" className="faq-item__toggle" />
+                </summary>
+                <div className="faq-item__panel-outer">
+                  <div className="faq-item__panel-inner">
+                    <div className="faq-item__panel" role="region" aria-labelledby={qId}>
+                      <div className="faq-item__answer">
+                        <div className="faq-item__a-rail" aria-hidden="true">
+                          {faq.answerIconSrc ? (
+                            <img
+                              className="faq-item__rail-img"
+                              src={faq.answerIconSrc}
+                              alt=""
+                              width={96}
+                              height={96}
+                              decoding="async"
+                              loading="lazy"
+                            />
+                          ) : null}
+                        </div>
+                        <p className="faq-item__a">{item.a}</p>
+                      </div>
                     </div>
-                  </article>
-                  <article className="faq-split-card faq-split-card--a" aria-label="Ответ">
-                    <div className="faq-split-card__rail" aria-hidden="true">
-                      {faq.answerIconSrc ? (
-                        <img
-                          className="faq-split-card__rail-img"
-                          src={faq.answerIconSrc}
-                          alt=""
-                          width={96}
-                          height={96}
-                          decoding="async"
-                          loading="lazy"
-                        />
-                      ) : null}
-                    </div>
-                    <div className="faq-split-card__main">
-                      <p className="faq-split-card__a">{item.a}</p>
-                    </div>
-                  </article>
+                  </div>
                 </div>
-              </div>
+              </details>
             );
           })}
         </div>

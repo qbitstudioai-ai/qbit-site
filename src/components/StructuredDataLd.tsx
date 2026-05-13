@@ -10,9 +10,9 @@ function telephoneE164(telHref: string) {
   return telHref.replace(/^tel:/i, "");
 }
 
-/** JSON-LD Organization + WebSite; title страницы из siteCopy */
+/** JSON-LD Organization + WebSite + FAQPage; title страницы из siteCopy */
 export function StructuredDataLd() {
-  const { siteSeo } = useSiteContent();
+  const { siteSeo, faq } = useSiteContent();
   const L = useSiteSettings().resolvedContacts;
   const base = siteBaseUrl();
   const orgId = `${base}/#organization`;
@@ -44,6 +44,19 @@ export function StructuredDataLd() {
         description: siteSeo.description,
         inLanguage: "ru-RU",
         publisher: { "@id": orgId },
+      },
+      {
+        "@type": "FAQPage",
+        "@id": `${base}/#faqpage`,
+        url: `${base}/`,
+        mainEntity: faq.items.map((item) => ({
+          "@type": "Question",
+          name: item.q,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: item.a,
+          },
+        })),
       },
     ],
   };
